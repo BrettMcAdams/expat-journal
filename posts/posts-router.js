@@ -30,6 +30,19 @@ router.get("/:id", (req, res) => {
     });
 });
 
+router.put('/:id', (req, res) => {
+  const updatedPost = req.body
+  const id = req.params.id
+
+  if (isValid(updatedPost)) {
+    Posts.update(id, updatedPost)
+      .then(post => {
+        console.log(post);
+      })
+  }
+
+})
+
 router.post("/", (req, res) => {
   const newPost = req.body;
 

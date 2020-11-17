@@ -36,16 +36,16 @@ async function add(post) {
   }
 }
 
-async function update(post) {
+async function update(id, post) {
   try {
-    const [id] = await db("posts").update(post, "id")
+    const [updatedId] = await db("posts").where({ id }).update(post, "id");
 
-    findById(id)
+    return findById(updatedId);
   } catch (error) {
     throw error
   }
 }
 
 function remove(id) {
-  return db("posts").where({ id }).del()
+  return db("posts").where({ id }).del();
 }

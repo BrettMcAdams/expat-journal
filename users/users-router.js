@@ -45,7 +45,7 @@ router.put("/:id", restricted, (req, res) => {
 
     Users.update(id, user)
       .then((user) => {
-        res.status(204).json(user[0]);
+        res.status(202).json(user[0]);
       })
       .catch((error) => {
         res
@@ -66,7 +66,7 @@ router.delete("/:id", restricted, (req, res) => {
   Users.remove(id)
     .then((user) => {
       if (user === 1) {
-        res.status(204).json({
+        res.status(202).json({
           message: `The user with the id ${id} was successfully deleted`,
         });
       } else {

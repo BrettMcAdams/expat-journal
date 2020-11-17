@@ -1,4 +1,5 @@
 const db = require("../database/db-config");
+const sqlite3 = require('sqlite3')
 
 module.exports = {
   find,
@@ -25,7 +26,7 @@ async function add(user) {
   try {
     const [id] = await db("users").insert(user, "id");
 
-    findById(id);
+    return findById(id);
   } catch (error) {
     throw error;
   }
