@@ -56,8 +56,8 @@ router.post("/register", (req, res) => {
           "Please provide a name, email and password. Your password should be alphanumeric",
       });
     }
-  } catch (error) {
-    res.json({error})
+  } catch (err) {
+    res.json(err.message)
   }
 });
 
