@@ -35,25 +35,29 @@ router.post("/login", (req, res) => {
 router.post("/register", (req, res) => {
   const credentials = req.body;
 
-  if (isValidRegister(credentials)) {
-    const rounds = process.env.BCRYPT_ROUNDS || 8;
+  try {
+    if (isValidRegister(credentials)) {
+      const rounds = process.env.BCRYPT_ROUNDS || 8;
 
-    const hash = bcryptjs.hashSync(credentials.password, rounds);
+      const hash = bcryptjs.hashSync(credentials.password, rounds);
 
-    credentials.password = hash;
+      credentials.password = hash;
 
-    Users.add(credentials)
-      .then((user) => {
-        res.status(201).json({ data: user });
-      })
-      .catch((error) => {
-        res.status(500).json({ message: error.message });
+      Users.add(credentials)
+        .then((user) => {
+          res.status(201).json({ data: user });
+        })
+        .catch((error) => {
+          res.status(500).json({ message: error.message });
+        });
+    } else {
+      res.status(400).json({
+        message:
+          "Please provide a name, email and password. Your password should be alphanumeric",
       });
-  } else {
-    res.status(400).json({
-      message:
-        "Please provide a name, email and password. Your password should be alphanumeric",
-    });
+    }
+  } catch (error) {
+    res.json({error})
   }
 });
 
