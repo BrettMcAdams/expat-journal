@@ -30,7 +30,7 @@ async function add(post) {
   try {
     const [id] = await db("posts").insert(post, "id");
 
-    findById(id);
+    return findById(id);
   } catch (error) {
     throw error;
   }
@@ -42,7 +42,7 @@ async function update(id, post) {
 
     return findById(updatedId);
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 

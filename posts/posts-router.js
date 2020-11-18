@@ -30,39 +30,44 @@ router.get("/:id", (req, res) => {
     });
 });
 
-router.put('/:id', (req, res) => {
-  const updatedPost = req.body
-  const id = req.params.id
+router.put("/:id", (req, res) => {
+  const updatedPost = req.body;
+  const id = req.params.id;
 
   if (isValid(updatedPost)) {
-    Posts.update(id, updatedPost)
-      .then(post => {
-        console.log(post);
-      })
+    Posts.update(id, updatedPost).then((post) => {
+      res.status(203).json({post})
+    })
+    .catch(error => {
+      res.json({ error: error.message })
+    })
   }
-
-})
+});
 
 router.post("/", (req, res) => {
   const newPost = req.body;
 
-  if (isValid(newPost)) {
-    Posts.add(newPost)
-      .then((post) => {
-        res.status(201).json({ data: post });
-      })
-      .catch((error) => {
-        res.status(500).json({ message: error.message });
+  try {
+    if (isValid(newPost)) {
+      Posts.add(newPost)
+        .then((post) => {
+          res.status(201).json({ data: post });
+        })
+        .catch((error) => {
+          res.status(500).json({ message: error.message });
+        });
+    } else {
+      res.status(400).json({
+        message:
+          "Please provide a completed post. Your password should be alphanumeric",
       });
-  } else {
-    res.status(400).json({
-      message:
-        "Please provide a completed post. Your password should be alphanumeric",
-    });
+    }
+  } catch (error) {
+    res.json(error.message);
   }
 });
 
-router.delete('/:id', (req, res) => {
+router.delete("/:id", (req, res) => {
   const id = req.params.id;
 
   Posts.remove(id)
@@ -78,6 +83,6 @@ router.delete('/:id', (req, res) => {
     .catch((err) => {
       res.status(500).json({ message: "Database error", error: err.message });
     });
-})
+});
 
 module.exports = router;
